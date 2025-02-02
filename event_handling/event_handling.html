@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Handling Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
+        input { padding: 5px; font-size: 16px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>🔹 JavaScript Event Handling Example</h2>
+
+    <button id="clickButton">Click Me</button>
+    <button id="hoverButton">Hover Over Me</button>
+    <br><br>
+    <input type="text" id="textInput" placeholder="Type something..." />
+
+    <script>
+        // 👉 Click Event (Change Button Color)
+        document.getElementById("clickButton").addEventListener("click", function() {
+            this.style.backgroundColor = "lightblue";
+            alert("🔵 Button Clicked!");
+        });
+
+        // 👉 Mouseover Event (Hover Effect)
+        document.getElementById("hoverButton").addEventListener("mouseover", function() {
+            this.style.backgroundColor = "yellow";
+            this.textContent = "You Hovered!";
+        });
+
+        // 👉 Keydown Event (Detect Key Press)
+        document.getElementById("textInput").addEventListener("keydown", function(event) {
+            console.log("🔤 Key Pressed:", event.key);
+        });
+    </script>
+
+</body>
+</html>

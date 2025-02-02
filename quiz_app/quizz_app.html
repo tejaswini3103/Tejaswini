@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Quiz App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .quiz-container { max-width: 500px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .question { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .options { list-style: none; padding: 0; }
+        .options li { padding: 10px; background: #f1f1f1; margin: 5px 0; cursor: pointer; border-radius: 5px; }
+        .options li:hover { background: #ddd; }
+        .options li.selected { background: #4CAF50; color: white; font-weight: bold; } /* Highlight selected answer */
+        .btn { padding: 10px 15px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <h2>🎯 JavaScript Quiz App</h2>
+    <div class="quiz-container">
+        <div id="quiz">
+            <p class="question"></p>
+            <ul class="options"></ul>
+            <button class="btn" id="submitBtn">Submit Answer</button>
+        </div>
+        <div id="result"></div>
+        <p>🏆 Best Score: <span id="bestScore">0</span></p>
+    </div>
+
+    <script>
+        // ✅ Step 1: Store Questions in an Array of Objects
+        const quizData = [
+            { question: "What is the capital of France?", options: ["Berlin", "Madrid", "Paris", "Rome"], answer: "Paris" },
+            { question: "Which is the largest planet?", options: ["Earth", "Jupiter", "Mars", "Saturn"], answer: "Jupiter" },
+            { question: "Who developed JavaScript?", options: ["Brendan Eich", "Elon Musk", "Bill Gates", "Mark Zuckerberg"], answer: "Brendan Eich" }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let bestScore = localStorage.getItem("bestScore") || 0;
+
+        document.getElementById("bestScore").textContent = bestScore;
+
+        const quizContainer = document.getElementById("quiz");
+        const questionElement = document.querySelector(".question");
+        const optionsList = document.querySelector(".options");
+        const resultElement = document.getElementById("result");
+
+        // ✅ Step 2: Function to Display Questions Dynamically
+        function loadQuestion() {
+            const qData = quizData[currentQuestion];
+            questionElement.textContent = qData.question;
+            optionsList.innerHTML = ""; 
+
+            qData.options.forEach(option => {
+                const li = document.createElement("li");
+                li.textContent = option;
+                li.addEventListener("click", (event) => selectAnswer(event, option));
+                optionsList.appendChild(li);
+            });
+        }
+
+        let selectedAnswer = "";
+        function selectAnswer(event, option) {
+            selectedAnswer = option;
+
+            // Remove 'selected' class from all options
+            document.querySelectorAll(".options li").forEach(li => li.classList.remove("selected"));
+
+            // Add 'selected' class to the clicked option
+            event.target.classList.add("selected");
+        }
+
+        // ✅ Step 3: Event Listener for Submitting Answer
+        document.getElementById("submitBtn").addEventListener("click", function () {
+            if (!selectedAnswer) {
+                alert("⚠️ Please select an answer!"); 
+                return;
+            }
+
+            const correctAnswer = quizData[currentQuestion].answer;
+            
+            if (selectedAnswer === correctAnswer) {
+                score++;
+            }
+
+            // ✅ Step 4: Use setTimeout() to Show Correct Answer After Submission
+            setTimeout(() => {
+                currentQuestion++;
+
+                if (currentQuestion < quizData.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+
+                selectedAnswer = "";
+            }, 500);
+        });
+
+        // ✅ Step 5: Display Final Score Using Template Literals
+        function showResult() {
+            quizContainer.innerHTML = `<h3>🎉 Quiz Completed!</h3>
+                                       <p>Your Score: ${score}/${quizData.length}</p>`;
+
+            // ✅ Step 6: Save Best Score in Local Storage
+            if (score > bestScore) {
+                localStorage.setItem("bestScore", score);
+                document.getElementById("bestScore").textContent = score;
+            }
+        }
+
+        // ✅ Step 7: Load First Question
+        loadQuestion();
+    </script>
+
+</body>
+</html>

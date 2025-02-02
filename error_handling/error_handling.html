@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Handling Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>🔹 JavaScript Error Handling Example</h2>
+    <button id="errorButton">Trigger Error</button>
+
+    <script>
+        // Function to demonstrate error handling
+        function triggerError() {
+            try {
+                let userInput = prompt("Enter a number:");
+
+                if (!userInput) throw "Input is empty!";  // Custom error
+                if (isNaN(userInput)) throw "Not a valid number!"; // Custom error
+
+                let result = 10 / userInput; // If user enters 0, it will cause an issue
+                if (!isFinite(result)) throw "Cannot divide by zero!";
+
+                alert("✅ Success! Your result: " + result);
+            } 
+            catch (error) {
+                alert("❌ Error: " + error);
+            } 
+            finally {
+                console.log("✅ Error checking complete!");
+            }
+        }
+
+        // Attach event listener to the button
+        document.getElementById("errorButton").addEventListener("click", triggerError);
+    </script>
+
+</body>
+</html>
